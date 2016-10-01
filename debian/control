@@ -1,0 +1,9 @@
+Package: epub-thumbnailer
+Architecture: all
+Maintainer: Livanh <livanh@bulletmail.org>
+Depends: unzip, imagemagick, python-gtk2
+Priority: optional
+Version: 0.1
+Description: Thumbnailer for EPUB files 
+ This script creates thumbnails for EPUB files in PCManFM and other file managers.
+
