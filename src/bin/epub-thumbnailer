@@ -10,7 +10,7 @@ if [ -z "$1" ]; then exit 0; fi
 INFILE="$1"
 OUTFILE="$2"
 SIZE="$3"
-TMPDIR=/tmp/.mobi-tumbnailer-$(dd if=/dev/urandom bs=1 count=2 status=none | od -A n -t x2 |cut -d ' ' -f 2)
+TMPDIR="$(mktemp -d -t .epub-thumbnailer-XXXXXX)"
 
 mkdir "$TMPDIR"
 unzip "$INFILE" -d "$TMPDIR"
