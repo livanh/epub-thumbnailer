@@ -2,39 +2,20 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-function gtk_find_icon() {
-	python -c "import gtk; print gtk.icon_theme_get_default().lookup_icon(\"$1\",$2,0).get_filename()"
-}
-
 if [ -z "$1" ]; then exit 0; fi
+
 INFILE="$1"
 OUTFILE="$2"
 SIZE="$3"
-TMPDIR="$(mktemp -d -t .epub-thumbnailer-XXXXXX)"
+TMP_DIR="$(mktemp -d -t .epub-thumbnailer-XXXXXX)"
 
-mkdir "$TMPDIR"
-unzip "$INFILE" -d "$TMPDIR"
-
-find "$TMPDIR" -iname content.opf
-CONTENTOPF="$(find "$TMPDIR" -iname content.opf)"
+unzip "$INFILE" -d "$TMP_DIR"
+find "$TMP_DIR" -iname content.opf
+CONTENTOPF="$(find "$TMP_DIR" -iname content.opf)"
 COVERFILE="$(dirname "$CONTENTOPF")/$(grep id=\"cover[-image]*\" "$CONTENTOPF" | sed s/.*href=\"// | sed s/\".*//)"
-echo "$COVERFILE"
-#COVERFILE="$(ls -s -S "$TMPDIR/data/"*.jpg | head -1 | cut -d \  -f 2)"
-
-case $(echo $SIZE | cut -d x -f 1 ) in
-  256)	ICON_SIZE=128;;
-  192)	ICON_SIZE=96;;
-  128)	ICON_SIZE=64;;
-   96)	ICON_SIZE=48;;
-   72)	ICON_SIZE=36;;
-   64)	ICON_SIZE=32;;
-   48)	ICON_SIZE=24;;
-    *)	ICON_SIZE=16;;
-esac
 
 if [ $COVERFILE ]; then
-	ICON_FILE="$(gtk_find_icon application-epub+zip $ICON_SIZE)"
-	convert "$COVERFILE" -resize "${SIZE}x${SIZE}" -background none -gravity center -extent "${SIZE}x${SIZE}" "$ICON_FILE" -gravity SouthEast -composite "$OUTFILE"
+    convert "$COVERFILE" -resize "${SIZE}x${SIZE}" "$OUTFILE"
 fi
 
-rm -R "$TMPDIR"
+rm -R "$TMP_DIR"
