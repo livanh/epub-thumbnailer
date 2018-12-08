@@ -1,4 +1,10 @@
-epub-thumbnailer (0.2.1-1) UNRELEASED; urgency=low
+epub-thumbnailer (0.2.1-2) testing; urgency=medium
+
+  * Changed email address
+
+ -- Livanh <livanh@protonmail.com>  Sat, 08 Dec 2018 12:49:08 +0100
+
+epub-thumbnailer (0.2.1-1) testing; urgency=low
 
   * Initial release.
 
